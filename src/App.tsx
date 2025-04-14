@@ -1,7 +1,12 @@
+import Title from "./components/title/Title";
 import "./App.css";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <Title />
+    </>
+  );
 }
 
 export default App;
