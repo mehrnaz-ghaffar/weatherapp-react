@@ -1,5 +1,10 @@
 #root {
   padding: 2rem;
   width: 100%;
-  text-align: center;
+  text-align: left;
+  background-color: white;
+}
+
+.container {
+  margin: 20px;
 }
