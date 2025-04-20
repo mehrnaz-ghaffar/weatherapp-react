@@ -2,16 +2,21 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { useState } from "react";
 
 const axiosInstance = axios.create({
-  baseURL: "http://api.weatherapi.com/v1/", // Change this to your API base URL
+  baseURL: "http://api.weatherapi.com/v1", // Change this to your API base URL
   headers: {
     "Content-Type": "application/json",
   },
 });
 
 const useAxios = <T>(url: string, method: string, payload?: any) => {
+  const [baseURL, setBaseURL] = useState<string>(
+    "http://api.weatherapi.com/v1"
+  );
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<AxiosError | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const requestUrl = baseURL + url;
 
   const fetchData = async () => {
     setLoading(true);
@@ -19,7 +24,7 @@ const useAxios = <T>(url: string, method: string, payload?: any) => {
 
     try {
       const config = {
-        url,
+        url: requestUrl,
         method: method.toUpperCase() as AxiosRequestConfig["method"], // Ensure method is valid
         data: payload,
       };

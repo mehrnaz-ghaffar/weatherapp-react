@@ -1,6 +1,8 @@
 import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 import { useEffect, useState } from "react";
 import useAxios from "../../hooks/useAxios";
+import { Location } from "./interface";
 import "./Search.css";
 
 function Search() {
@@ -12,8 +14,8 @@ function Search() {
     error,
     loading,
     refetch,
-  } = useAxios(
-    `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${searchKey}&aqi=no`,
+  } = useAxios<Location[]>(
+    `/search.json?key=${apiKey}&q=${searchKey}&aqi=no`,
     "post"
   );
 
@@ -30,17 +32,24 @@ function Search() {
 
   return (
     <>
-      <TextField
+      <Autocomplete
         value={searchKey}
-        label="Location"
+        freeSolo
+        onInputChange={(event) => setSearchKey(event.target.value)}
+        options={data?.length ? data?.map((location) => location.name) : []}
         className="inputClass"
-        variant="outlined"
-        onChange={(event) => {
-          setSearchKey(event.target.value);
-        }}
+        renderInput={(params) => (
+          <TextField {...params} label="Location" variant="outlined" />
+        )}
       />
     </>
   );
 }
 
 export default Search;
+
+//   <TextField
+//   value={searchKey}
+//   className="inputClass"
+//   onChange={(event) => setSearchKey(event.target.value)}
+// />
