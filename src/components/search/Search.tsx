@@ -56,7 +56,7 @@ function Search() {
               component="li"
               sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
             >
-              <strong>${option.name} </strong>
+              <strong>{option.name} </strong>
               <small>{` ( ${option.region}, ${option.country} )`}</small>
             </Box>
           );
