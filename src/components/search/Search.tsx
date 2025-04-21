@@ -1,5 +1,6 @@
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import useAxios from "../../hooks/useAxios";
 import { Location } from "./interface";
@@ -9,12 +10,7 @@ function Search() {
   const [apiKey, setApiKey] = useState("d7b29e486645423084d124534251504");
   const [searchKey, setSearchKey] = useState("");
   // const [data, setData] = useState({});
-  const {
-    data: data,
-    error,
-    loading,
-    refetch,
-  } = useAxios<Location[]>(
+  const { data, error, loading, refetch } = useAxios<Location[]>(
     `/search.json?key=${apiKey}&q=${searchKey}&aqi=no`,
     "post"
   );
@@ -32,24 +28,42 @@ function Search() {
 
   return (
     <>
+      {/* 
+      TODO:
+      debounce
+      add spinner while fetch
+      add flag
+    */}
       <Autocomplete
-        value={searchKey}
+        inputValue={searchKey}
         freeSolo
-        onInputChange={(event) => setSearchKey(event.target.value)}
-        options={data?.length ? data?.map((location) => location.name) : []}
+        onInputChange={(event, newInputValue) =>
+          setSearchKey(newInputValue || "")
+        }
+        options={data ?? []}
         className="inputClass"
+        getOptionLabel={(option) =>
+          typeof option === "string" ? option : option.name
+        }
         renderInput={(params) => (
           <TextField {...params} label="Location" variant="outlined" />
         )}
+        renderOption={(props, option) => {
+          return (
+            <Box
+              {...props}
+              key={option.id}
+              component="li"
+              sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+            >
+              <strong>${option.name} </strong>
+              <small>{` ( ${option.region}, ${option.country} )`}</small>
+            </Box>
+          );
+        }}
       />
     </>
   );
 }
 
 export default Search;
-
-//   <TextField
-//   value={searchKey}
-//   className="inputClass"
-//   onChange={(event) => setSearchKey(event.target.value)}
-// />
