@@ -8,10 +8,11 @@ import "./Search.css";
 
 function Search({
   onChangeLocation,
+  apiKey,
 }: {
   onChangeLocation: (location: Location | null) => void;
+  apiKey: string;
 }) {
-  const [apiKey, setApiKey] = useState("d7b29e486645423084d124534251504");
   const [searchKey, setSearchKey] = useState("");
   // const [data, setData] = useState({});
   const { data, error, loading, refetch } = useAxios<Location[]>(

@@ -4,34 +4,65 @@ import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
 import Switch from "@mui/material/Switch";
 
-function WeatherCard({ selectedLocation }) {
+// hooks
+import { useEffect } from "react";
+import useAxios from "../../hooks/useAxios";
+
+// types
+import { Location } from "../search/interface";
+import WeatherResponse from "./interface";
+
+function WeatherCard({
+  selectedLocation,
+  apiKey,
+}: {
+  selectedLocation: Location;
+  apiKey: string;
+}) {
+  const { data, error, loading, refetch } = useAxios<WeatherResponse>(
+    `/current.json?key=${apiKey}&q=${selectedLocation.name}&aqi=no`,
+    "post"
+  );
+
+  useEffect(() => {
+    refetch();
+  }, [selectedLocation]);
+
   return (
     <>
       <Card className="my-4" sx={{ mt: 3 }}>
         <CardHeader title="Current Weather" action={<Switch />} />
 
         <CardContent className="" sx={{ px: 6 }}>
-          <Grid container spacing={2}>
-            <Grid size={6}>
-              <div>
-                <h4>{selectedLocation.name}</h4>
-                <h1>
-                  <span>icon</span>
-                  <span>number °F | °C</span>
-                </h1>
-                <span>weather situation</span>
-              </div>
+          {data && (
+            <Grid container spacing={2}>
+              <Grid size={6}>
+                <div>
+                  <h4>{selectedLocation.name}</h4>
+                  <h1>
+                    <span>icon</span>
+                    <span>
+                      number {data.current.dewpoint_f} °F |
+                      {data.current.dewpoint_c} °C
+                    </span>
+                  </h1>
+                  <span>weather situation {data.current.condition.text}</span>
+                </div>
+              </Grid>
+              <Grid size={6}>
+                <div>
+                  <span>
+                    feeling {data.current.feelslike_c} C |
+                    {data.current.feelslike_f} F
+                  </span>
+                  <div>temps</div>
+                  <div> humidity</div>
+                  <div>wind</div>
+                  <div>pressure</div>
+                </div>
+              </Grid>
             </Grid>
-            <Grid size={6}>
-              <div>
-                <span>feeling</span>
-                <div>temps</div>
-                <div> humidity</div>
-                <div>wind</div>
-                <div>pressure</div>
-              </div>
-            </Grid>
-          </Grid>
+          )}
         </CardContent>
       </Card>
     </>
