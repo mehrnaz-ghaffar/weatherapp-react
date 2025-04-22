@@ -4,7 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
 import Switch from "@mui/material/Switch";
 
-function WeatherCard() {
+function WeatherCard({ selectedLocation }) {
   return (
     <>
       <Card className="my-4" sx={{ mt: 3 }}>
@@ -14,11 +14,11 @@ function WeatherCard() {
           <Grid container spacing={2}>
             <Grid size={6}>
               <div>
-                <h4>city</h4>
-                <div>
+                <h4>{selectedLocation.name}</h4>
+                <h1>
                   <span>icon</span>
-                  <span>number</span>
-                </div>
+                  <span>number °F | °C</span>
+                </h1>
                 <span>weather situation</span>
               </div>
             </Grid>

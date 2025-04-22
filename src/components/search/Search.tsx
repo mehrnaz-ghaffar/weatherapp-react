@@ -6,7 +6,11 @@ import useAxios from "../../hooks/useAxios";
 import { Location } from "./interface";
 import "./Search.css";
 
-function Search() {
+function Search({
+  onChangeLocation,
+}: {
+  onChangeLocation: (location: Location | null) => void;
+}) {
   const [apiKey, setApiKey] = useState("d7b29e486645423084d124534251504");
   const [searchKey, setSearchKey] = useState("");
   // const [data, setData] = useState({});
@@ -14,10 +18,6 @@ function Search() {
     `/search.json?key=${apiKey}&q=${searchKey}&aqi=no`,
     "post"
   );
-
-  console.log("data", data);
-  console.log("error", error);
-  console.log("loading", loading);
 
   useEffect(() => {
     if (searchKey.length > 3) {
@@ -40,6 +40,13 @@ function Search() {
         onInputChange={(event, newInputValue) =>
           setSearchKey(newInputValue || "")
         }
+        onChange={(event, newValue) => {
+          if (typeof newValue === "string") {
+            onChangeLocation(null); // or handle manual input differently
+          } else {
+            onChangeLocation(newValue);
+          }
+        }}
         options={data ?? []}
         className="inputClass"
         getOptionLabel={(option) =>
