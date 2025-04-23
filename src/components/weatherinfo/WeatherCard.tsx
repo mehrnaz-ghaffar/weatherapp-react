@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import Switch from "@mui/material/Switch";
 
 // hooks
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useAxios from "../../hooks/useAxios";
 
 // types
@@ -19,10 +19,17 @@ function WeatherCard({
   selectedLocation: Location;
   apiKey: string;
 }) {
+  const [isFerenhit, setisFerenhit] = useState<boolean>(false);
+
   const { data, error, loading, refetch } = useAxios<WeatherResponse>(
     `/current.json?key=${apiKey}&q=${selectedLocation.name}&aqi=no`,
     "post"
   );
+
+  // rename
+  function handleChangeTempMode() {
+    setisFerenhit(() => !isFerenhit);
+  }
 
   useEffect(() => {
     refetch();
@@ -31,8 +38,13 @@ function WeatherCard({
   return (
     <>
       <Card className="my-4" sx={{ mt: 3 }}>
-        <CardHeader title="Current Weather" action={<Switch />} />
-
+        <CardHeader
+          title="Current Weather"
+          action={
+            <Switch checked={isFerenhit} onChange={handleChangeTempMode} />
+          }
+        />
+        ththth {isFerenhit.toString()}
         <CardContent className="" sx={{ px: 6 }}>
           {data && (
             <Grid container spacing={2}>
@@ -42,8 +54,9 @@ function WeatherCard({
                   <h1>
                     <span>icon</span>
                     <span>
-                      number {data.current.dewpoint_f} °F |
-                      {data.current.dewpoint_c} °C
+                      {isFerenhit
+                        ? `${data.current.dewpoint_f} °F`
+                        : `${data.current.dewpoint_c} °C`}
                     </span>
                   </h1>
                   <span>weather situation {data.current.condition.text}</span>
@@ -52,8 +65,11 @@ function WeatherCard({
               <Grid size={6}>
                 <div>
                   <span>
-                    feeling {data.current.feelslike_c} C |
-                    {data.current.feelslike_f} F
+                    {`Feels like ${
+                      isFerenhit
+                        ? data.current.feelslike_f
+                        : data.current.feelslike_c
+                    }`}
                   </span>
                   <div>temps</div>
                   <div> humidity</div>
