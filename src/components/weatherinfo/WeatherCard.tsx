@@ -49,7 +49,9 @@ function WeatherCard({
             <Grid container spacing={2}>
               <Grid size={6}>
                 <div>
-                  <h4>{selectedLocation.name}</h4>
+                  <h4>
+                    {data.location.name} ({data.location.country})
+                  </h4>
                   <h1>
                     <span>
                       <img
@@ -68,20 +70,27 @@ function WeatherCard({
               </Grid>
               <Grid size={6}>
                 <div>
-                  <span>
+                  <span style={{ marginRight: "20px" }}>
                     {`Feels like ${
                       isFerenhit
                         ? data.current.feelslike_f
                         : data.current.feelslike_c
-                    }`}
+                    }°`}
                   </span>
-                  <div>temps</div>
-                  <div> humidity {data.current.humidity}% </div>
+                  {/* need to call another api for temps */}
+                  <div>temps </div>
                   <div>
-                    <span>Wind</span>
+                    <span style={{ marginRight: "20px" }}>humidity</span>
+                    <span>{data.current.humidity}%</span>
+                  </div>
+                  <div>
+                    <span style={{ marginRight: "20px" }}>Wind</span>
                     <span>{data.current.wind_kph} kph</span>
                   </div>
-                  <div>pressure</div>
+                  <div>
+                    <span style={{ marginRight: "20px" }}>Pressure</span>
+                    <span>{data.current.pressure_in}in</span>
+                  </div>
                 </div>
               </Grid>
             </Grid>
