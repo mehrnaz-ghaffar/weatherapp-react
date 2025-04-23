@@ -44,7 +44,6 @@ function WeatherCard({
             <Switch checked={isFerenhit} onChange={handleChangeTempMode} />
           }
         />
-        ththth {isFerenhit.toString()}
         <CardContent className="" sx={{ px: 6 }}>
           {data && (
             <Grid container spacing={2}>
@@ -52,14 +51,19 @@ function WeatherCard({
                 <div>
                   <h4>{selectedLocation.name}</h4>
                   <h1>
-                    <span>icon</span>
+                    <span>
+                      <img
+                        src="//cdn.weatherapi.com/weather/64x64/day/296.png"
+                        alt="conditionIcon"
+                      />
+                    </span>
                     <span>
                       {isFerenhit
                         ? `${data.current.dewpoint_f} °F`
                         : `${data.current.dewpoint_c} °C`}
                     </span>
                   </h1>
-                  <span>weather situation {data.current.condition.text}</span>
+                  <h2>{data.current.condition.text}</h2>
                 </div>
               </Grid>
               <Grid size={6}>
@@ -72,8 +76,11 @@ function WeatherCard({
                     }`}
                   </span>
                   <div>temps</div>
-                  <div> humidity</div>
-                  <div>wind</div>
+                  <div> humidity {data.current.humidity}% </div>
+                  <div>
+                    <span>Wind</span>
+                    <span>{data.current.wind_kph} kph</span>
+                  </div>
                   <div>pressure</div>
                 </div>
               </Grid>
